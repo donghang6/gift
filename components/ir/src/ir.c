@@ -15,8 +15,13 @@ void ir_init()
     rmt_rx_start(RMT_CHANNEL_1, true);
 }
 
-void ir_receive()
+ir ir_receive()
 {
+    ir result = {
+        .items = NULL,
+        .addr = 0,
+        .cmd = 0
+    };
     bool repeat = false;
     rmt_item32_t *items = NULL;
     uint32_t length = 0;
@@ -24,13 +29,17 @@ void ir_receive()
     uint32_t cmd = 0;
     items = (rmt_item32_t *) xRingbufferReceive(rb, &length, 1000);
     if (items) {
+        result.items = items;
         length /= 4; // one RMT = 4 Bytes
         if (ir_parser->input(ir_parser, items, length) == ESP_OK) {
             if (ir_parser->get_scan_code(ir_parser, &addr, &cmd, &repeat) == ESP_OK) {
+                result.addr = addr;
+                result.cmd = cmd;
                 ESP_LOGI(TAG, "Scan Code --- addr: 0x%04x cmd: 0x%04x", addr, cmd);
             }
         }
         //after parsing the data, return spaces to ringbuffer.
         vRingbufferReturnItem(rb, (void *) items);
     }
+    return result;
 }
