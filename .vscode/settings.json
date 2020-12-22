@@ -1,0 +1,32 @@
+{
+  "C_Cpp.clang_format_style": "Visual Studio",
+  "editor.formatOnSave": false,
+  "[cpp]": {
+    "editor.quickSuggestions": true
+  },
+  "[c]": {
+    "editor.quickSuggestions": true
+  },
+  "C_Cpp.intelliSenseEngineFallback": "Enabled",
+  "idf.port": "/dev/ttyUSB1",
+  "idf.openOcdConfigs": [
+    "board/esp32-wrover-kit-1.8v.cfg"
+  ],
+  "idf.showOnboardingOnInit": false,
+  "idf.pythonBinPath": "/home/donghang/.espressif/python_env/idf4.2_py3.8_env/bin/python",
+  "idf.baudRate": "921600",
+  "files.associations": {
+    "type_traits": "c",
+    "freertos.h": "c",
+    "spi.h": "c",
+    "ws28xx.h": "c",
+    "task.h": "c",
+    "spi_master.h": "c",
+    "stdio.h": "c",
+    "rmt.h": "c",
+    "ir_tools.h": "c",
+    "string_view": "c",
+    "*.ipp": "c",
+    "ir.h": "c"
+  }
+}

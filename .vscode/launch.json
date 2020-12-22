@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "gdb",
+        "name": "debug",
+        "request": "launch",
+        "target": "./build/gift.elf",
+        "cwd": "${workspaceFolder}",
+        "gdbpath": "/home/donghang/.espressif/tools/xtensa-esp32-elf/esp-2020r2-8.2.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-gdb",
+        "autorun": [
+          "target remote :3333",
+          "set remote hardware-watchpoint-limit 2",
+          "mon reset halt",
+          "flushregs",
+          "thb app_main",
+          "c"
+        ]
+      }
+    ]
+  }
