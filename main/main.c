@@ -10,14 +10,21 @@
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "freertos/semphr.h"
+#include "freertos/timers.h"
 #include "ir.h"
 #include "esp_log.h"
 #include "ws2812b.h"
 
 static const char *TAG = "main";
 
-static SemaphoreHandle_t lock = NULL;
 static QueueHandle_t queue = NULL;
+static TimerHandle_t timer = NULL;
+
+typedef struct
+{
+    ir receive_result;
+    led_strip_t *strip;
+}ws2812b_task_info;
 
 static void ws2812b_task(void *arg)
 {
@@ -31,13 +38,13 @@ static void ws2812b_task(void *arg)
                 printf("power\n");
                     if (!togglt) {
                         ws2812b_set_pixel(strip, 0, RED);
-                        ws2812b_set_pixel(strip, 1, RED);
-                        ws2812b_set_pixel(strip, 2, RED);
-                        ws2812b_set_pixel(strip, 3, RED);
-                        ws2812b_set_pixel(strip, 4, RED);
-                        ws2812b_set_pixel(strip, 5, RED);
-                        ws2812b_set_pixel(strip, 6, RED);
-                        ws2812b_set_pixel(strip, 7, RED);
+                        // ws2812b_set_pixel(strip, 1, RED);
+                        // ws2812b_set_pixel(strip, 2, RED);
+                        // ws2812b_set_pixel(strip, 3, RED);
+                        // ws2812b_set_pixel(strip, 4, RED);
+                        // ws2812b_set_pixel(strip, 5, RED);
+                        // ws2812b_set_pixel(strip, 6, RED);
+                        // ws2812b_set_pixel(strip, 7, RED);
                         ESP_ERROR_CHECK(strip->refresh(strip, 1000));
                     } else {
                         ESP_ERROR_CHECK(strip->clear(strip, 1000));
@@ -106,21 +113,44 @@ static void ws2812b_task(void *arg)
                 break;
         }
     }
-    xSemaphoreGive(lock);
     vTaskDelete(NULL);
+}
+
+void vTimerCallback(TimerHandle_t xTimer)
+{
+    printf("timer expired\n");
+    ws2812b_task_info *info = pvTimerGetTimerID(timer);
+    if (xQueueSendToBack(queue, &(info->receive_result), 0) != pdPASS) {
+        ESP_LOGE(TAG, "send message to queue failed\n");
+    }
+    xTaskCreate(ws2812b_task, "ws2812b", 2000, info->strip, 3, NULL);
 }
 
 static void ir_receive_task(void *arg)
 {
     led_strip_t *strip = (led_strip_t *)arg;
+    ir receive_result = {
+        .items = NULL,
+        .cmd = 0,
+        .addr = 0
+    };
+    ws2812b_task_info info = {
+        .receive_result = receive_result,
+        .strip = strip
+    };
+    timer = xTimerCreate("Timer", pdMS_TO_TICKS(300), pdFALSE, &info, vTimerCallback);
+    if (timer == NULL) {
+        ESP_LOGE(TAG, "create timer failed\n");
+    }
     for(;;) {
-        ir receive_result =  ir_receive();
+        receive_result =  ir_receive();
         if (receive_result.items && receive_result.addr != 0 && receive_result.cmd != 0) {
-            if (xSemaphoreTake(lock, 0) == pdPASS) {
-                if (xQueueSendToBack(queue, &receive_result, 0) != pdPASS) {
-                    ESP_LOGE(TAG, "send message to queue failed\n");
-                }
-                xTaskCreate(ws2812b_task, "ws2812b", 2000, strip, 3, NULL);
+            info.receive_result = receive_result;
+            vTimerSetTimerID(timer, &info);
+            if (xTimerReset(timer, pdMS_TO_TICKS(100)) == pdFAIL) {
+                ESP_LOGE(TAG, "reset timer failed\n");
+            } else {
+                ESP_LOGI(TAG, "reset timer\n");
             }
         }
     }
@@ -131,11 +161,6 @@ static void initial_task(void *arg)
 {
     led_strip_t *strip = ws2812b_init();
     ir_init();
-    lock = xSemaphoreCreateBinary();
-    if (lock == NULL) {
-        ESP_LOGE(TAG, "Create mutex failed!");
-    }
-    xSemaphoreGive(lock);
     queue = xQueueCreate(1, sizeof(ir));
     if (queue == NULL) {
         ESP_LOGE(TAG, "create queue failed\n");
