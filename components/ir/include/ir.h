@@ -1,9 +1,13 @@
-#ifndef IR_H_
-#define IR_H_
+#pragma once
+
 #include "driver/rmt.h"
 #include "ir_tools.h"
 #include "esp_log.h"
+typedef struct {
+    rmt_item32_t *items;
+    uint32_t addr;
+    uint32_t cmd;
+} ir;
 
 void ir_init();
-void ir_receive();
-#endif
+ir ir_receive();

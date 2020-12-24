@@ -6,11 +6,11 @@
  * @LastEditors: donghang
  * @LastEditTime: 2019-08-29 07:56:05
  */
-#ifndef COLOR_H_
-#define COLOR_H_
+#pragma once
+
 #define RED                         0xFF0000
 #define CYAN                        0x00FFFF 
-#define BLUE	                    0x0000FF 
+#define BLUE                        0x0000FF 
 #define DARKBLUE	                0x0000A0
 #define LIGHTBLUE	                0xADD8E6	
 #define ORANGE	                    0xFFA500
@@ -325,41 +325,391 @@
 #define PURPLE_IRIS                 0x571B7E	
 #define PLUM_PURPLE                 0x583759
 #define INDIGO                      0x4B0082	
-#define PURPLE_MONSTER              0x461B7E	
-#define PURPLE_HAZE                 0x4E387E	
-#define EGGPLANT                    0x614051	
-#define GRAPE                       0x5E5A80	
-#define PURPLE_JAM                  0x6A287E	
-#define DARK_ORCHID                 0x7D1B7E	
-#define PURPLE_FLOWER               0xA74AC7	
-#define MEDIUM_ORCHID               0xB048B5	
-#define PURPLE_AMETHYST             0x6C2DC7	
-#define DARK_VIOLET                 0x842DCE	
-#define VIOLET                      0x8D38C9	
-#define PURPLE_SAGE_BUSH            0x7A5DC7	
-#define LOVELY_PURPLE               0x7F38EC	
+#define PURPLE_MONSTER              0x461B7E
+#define PURPLE_HAZE                 0x4E387E
+#define EGGPLANT                    0x614051
+#define GRAPE                       0x5E5A80
+#define PURPLE_JAM                  0x6A287E
+#define DARK_ORCHID                 0x7D1B7E
+#define PURPLE_FLOWER               0xA74AC7
+#define MEDIUM_ORCHID               0xB048B5
+#define PURPLE_AMETHYST             0x6C2DC7
+#define DARK_VIOLET                 0x842DCE
+#define VIOLET                      0x8D38C9
+#define PURPLE_SAGE_BUSH            0x7A5DC7
+#define LOVELY_PURPLE               0x7F38EC
 // #define PURPLE                      0x8E35EF	
-#define AZTECH_PURPLE               0x893BFF	
-#define MEDIUM_PURPLE               0x8467D7	
-#define JASMINE_PURPLE              0xA23BEC	
-#define PURPLE_DAFFODIL             0xB041FF	
-#define TYRIAN_PURPLE               0xC45AEC	
-#define CROCUS_PURPLE               0x9172EC	
-#define PURPLE_MIMOSA               0x9E7BFF	
-#define HELIOTROPE_PURPLE           0xD462FF	
-#define CRIMSON                     0xE238EC	
-#define PURPLE_DRAGON               0xC38EC7	
-#define LILAC                       0xC8A2C8	
-#define BLUSH_PINK                  0xE6A9EC	
-#define MAUVE                       0xE0B0FF	
-#define WISTERIA_PURPLE             0xC6AEC7	
-#define BLOSSOM_PINK                0xF9B7FF	
-#define THISTLE                     0xD2B9D3	
-#define PERIWINKLE                  0xE9CFEC	
-#define LAVENDER_PINOCCHIO          0xEBDDE2	
-#define LAVENDER_BLUE               0xE3E4FA	
-#define PEARL                       0xFDEEF4	
-#define SEASHELL                    0xFFF5EE	
-#define MILK_WHITE                  0xFEFCFF	
-#define White                       0xFFFFFF	 
-#endif
+#define AZTECH_PURPLE               0x893BFF
+#define MEDIUM_PURPLE               0x8467D7
+#define JASMINE_PURPLE              0xA23BEC
+#define PURPLE_DAFFODIL             0xB041FF
+#define TYRIAN_PURPLE               0xC45AEC
+#define CROCUS_PURPLE               0x9172EC
+#define PURPLE_MIMOSA               0x9E7BFF
+#define HELIOTROPE_PURPLE           0xD462FF
+#define CRIMSON                     0xE238EC
+#define PURPLE_DRAGON               0xC38EC7
+#define LILAC                       0xC8A2C8
+#define BLUSH_PINK                  0xE6A9EC
+#define MAUVE                       0xE0B0FF
+#define WISTERIA_PURPLE             0xC6AEC7
+#define BLOSSOM_PINK                0xF9B7FF
+#define THISTLE                     0xD2B9D3
+#define PERIWINKLE                  0xE9CFEC
+#define LAVENDER_PINOCCHIO          0xEBDDE2
+#define LAVENDER_BLUE               0xE3E4FA
+#define PEARL                       0xFDEEF4
+#define SEASHELL                    0xFFF5EE
+#define MILK_WHITE                  0xFEFCFF
+#define White                       0xFFFFFF
+
+// unsigned int color_array[] = {
+//     RED,
+//     CYAN,
+//     BLUE,
+//     DARKBLUE,
+//     LIGHTBLUE,
+//     ORANGE,
+//     PURPLE,
+//     BROWN,
+//     YELLOW,
+//     LIME,
+//     MAGENTA,
+//     OLIVE,
+//     BLACK,
+//     NIGHT,
+//     GUNMETAL,
+//     MIDNIGHT,
+//     CHARCOAL,
+//     DARK_SLATE_GREY,
+//     OIL,
+//     BLACK_CAT,
+//     IRIDIUM,
+//     BLACK_EEL,
+//     BLACK_COW,
+//     GRAY_WOLF,
+//     VAMPIRE_GRAY,
+//     GRAY_DOLPHIN,
+//     CARBON_GRAY,
+//     ASH_GRAY,
+//     CLOUDY_GRAY,
+//     SMOKEY_GRAY,
+//     GRAY,
+//     GRANITE,
+//     BATTLESHIP_GRAY,
+//     GRAY_CLOUD,
+//     GRAY_GOOSE,
+//     PLATINUM,
+//     METALLIC_SILVER,
+//     BLUE_GRAY,
+//     LIGHT_SLATE_GRAY,
+//     SLATE_GRAY,
+//     JET_GRAY,
+//     MIST_BLUE,
+//     MARBLE_BLUE,
+//     STEEL_BLUE,
+//     BLUE_JAY,
+//     DARK_SLATE_BLUE,
+//     MIDNIGHT_BLUE,
+//     NAVY_BLUE,
+//     BLUE_WHALE,
+//     LAPIS_BLUE,
+//     CORNFLOWER_BLUE,
+//     EARTH_BLUE,
+//     COBALT_BLUE,
+//     BLUEBERRY_BLUE,
+//     SAPPHIRE_BLUE,
+//     BLUE_EYES,
+//     ROYAL_BLUE,
+//     BLUE_ORCHID,
+//     BLUE_LOTUS,
+//     LIGHT_SLATE_BLUE,
+//     SLATE_BLUE,
+//     GLACIAL_BLUE_ICE,
+//     SILK_BLUE,
+//     BLUE_IVY,
+//     BLUE_KOI,
+//     COLUMBIA_BLUE,
+//     BABY_BLUE,
+//     LIGHT_STEEL_BLUE,
+//     OCEAN_BLUE,
+//     BLUE_RIBBON,
+//     BLUE_DRESS,
+//     DODGER_BLUE,
+//     SKY_BLUE,
+//     BUTTERFLY_BLUE,
+//     ICEBERG,
+//     CRYSTAL_BLUE,
+//     DEEP_SKY_BLUE,
+//     DENIM_BLUE,
+//     LIGHT_SKY_BLUE,
+//     DAY_SKY_BLUE,
+//     JEANS_BLUE,
+//     BLUE_ANGEL,
+//     PASTEL_BLUE,
+//     SEA_BLUE,
+//     POWDER_BLUE,
+//     CORAL_BLUE,
+//     LIGHT_BLUE,
+//     ROBIN_EGG_BLUE,
+//     PALE_BLUE_LILY,
+//     LIGHT_CYAN,
+//     WATER,
+//     ALICEBLUE,
+//     AZURE,
+//     LIGHT_SLATE,
+//     LIGHT_AQUAMARINE,
+//     ELECTRIC_BLUE,
+//     AQUAMARINE,
+//     CYAN_OR_AQUA,
+//     TRON_BLUE,
+//     BLUE_ZIRCON,
+//     BLUE_LAGOON,
+//     CELESTE,
+//     BLUE_DIAMOND,
+//     TIFFANY_BLUE,
+//     CYAN_OPAQUE,
+//     BLUE_HOSTA,
+//     NORTHERN_LIGHTS_BLUE,
+//     MEDIUM_TURQUOISE,
+//     TURQUOISE,
+//     JELLYFISH,
+//     MACAW_BLUE_GREEN,
+//     LIGHT_SEA_GREEN,
+//     DARK_TURQUOISE,
+//     SEA_TURTLE_GREEN,
+//     MEDIUM_AQUAMARINE,
+//     GREENISH_BLUE,
+//     GRAYISH_TURQUOISE,
+//     BEETLE_GREEN,
+//     TEAL,
+//     SEA_GREEN,
+//     CAMOUFLAGE_GREEN,
+//     SAGE_GREEN,
+//     HAZEL_GREEN,
+//     VENOM_GREEN,
+//     FERN_GREEN,
+//     DARK_FOREST_GREEN,
+//     MEDIUM_SEA_GREEN,
+//     MEDIUM_FOREST_GREEN,
+//     SEAWEED_GREEN,
+//     PINE_GREEN,
+//     JUNGLE_GREEN,
+//     SHAMROCK_GREEN,
+//     MEDIUM_SPRING_GREEN,
+//     FOREST_GREEN,
+//     GREEN_ONION,
+//     SPRING_GREEN,
+//     LIME_GREEN,
+//     CLOVER_GREEN,
+//     GREEN_SNAKE,
+//     ALIEN_GREEN,
+//     GREEN_APPLE,
+//     YELLOW_GREEN,
+//     KELLY_GREEN,
+//     ZOMBIE_GREEN,
+//     FROG_GREEN,
+//     GREEN_PEAS,
+//     DOLLAR_BILL_GREEN,
+//     DARK_SEA_GREEN,
+//     IGUANA_GREEN,
+//     AVOCADO_GREEN,
+//     PISTACHIO_GREEN,
+//     SALAD_GREEN,
+//     HUMMINGBIRD_GREEN,
+//     NEBULA_GREEN,
+//     STOPLIGHT_GO_GREEN,
+//     ALGAE_GREEN,
+//     JADE_GREEN,
+//     GREEN,
+//     EMERALD_GREEN,
+//     LAWN_GREEN,
+//     CHARTREUSE,
+//     DRAGON_GREEN,
+//     MINT_GREEN,
+//     GREEN_THUMB,
+//     LIGHT_JADE,
+//     TEA_GREEN,
+//     GREEN_YELLOW,
+//     SLIME_GREEN,
+//     GOLDENROD,
+//     HARVEST_GOLD,
+//     SUN_YELLOW,
+//     YELLOW,
+//     CORN_YELLOW,
+//     PARCHMENT,
+//     CREAM,
+//     LEMON_CHIFFON,
+//     CORNSILK,
+//     BEIGE,
+//     BLONDE,
+//     ANTIQUEWHITE,
+//     CHAMPAGNE,
+//     BLANCHEDALMOND,
+//     VANILLA,
+//     TAN_BROWN,
+//     PEACH,
+//     MUSTARD,
+//     RUBBER_DUCKY_YELLOW,
+//     BRIGHT_GOLD,
+//     GOLDEN_BROWN,
+//     MACARONI_AND_CHEESE,
+//     SAFFRON,
+//     BEER,
+//     CANTALOUPE,
+//     BEE_YELLOW,
+//     BROWN_SUGAR,
+//     BURLYWOOD,
+//     DEEP_PEACH,
+//     GINGER_BROWN,
+//     SCHOOL_BUS_YELLOW,
+//     SANDY_BROWN,
+//     FALL_LEAF_BROWN,
+//     ORANGE_GOLD,
+//     SAND,
+//     COOKIE_BROWN,
+//     CARAMEL,
+//     BRASS,
+//     KHAKI,
+//     CAMEL_BROWN,
+//     BRONZE,
+//     TIGER_ORANGE,
+//     CINNAMON,
+//     BULLET_SHELL,
+//     DARK_GOLDENROD,
+//     COPPER,
+//     WOOD,
+//     OAK_BROWN,
+//     MOCCASIN,
+//     ARMY_BROWN,
+//     SANDSTONE,
+//     MOCHA,
+//     TAUPE,
+//     COFFEE,
+//     BROWN_BEAR,
+//     RED_DIRT,
+//     SEPIA,
+//     ORANGE_SALMON,
+//     RUST,
+//     RED_FOX,
+//     CHOCOLATE,
+//     SEDONA,
+//     PAPAYA_ORANGE,
+//     HALLOWEEN_ORANGE,
+//     PUMPKIN_ORANGE,
+//     CONSTRUCTION_CONE_ORANGE,
+//     SUNRISE_ORANGE,
+//     MANGO_ORANGE,
+//     DARK_ORANGE,
+//     CORAL,
+//     BASKET_BALL_ORANGE,
+//     LIGHT_SALMON,
+//     TANGERINE,
+//     DARK_SALMON,
+//     LIGHT_CORAL,
+//     BEAN_RED,
+//     VALENTINE_RED,
+//     SHOCKING_ORANGE,
+//     RED,
+//     SCARLET,
+//     RUBY_RED,
+//     FERRARI_RED,
+//     FIRE_ENGINE_RED,
+//     LAVA_RED,
+//     LOVE_RED,
+//     GRAPEFRUIT,
+//     CHESTNUT_RED,
+//     CHERRY_RED,
+//     MAHOGANY,
+//     CHILLI_PEPPER,
+//     CRANBERRY,
+//     RED_WINE,
+//     BURGUNDY,
+//     CHESTNUT,
+//     BLOOD_RED,
+//     SIENNA,
+//     SANGRIA,
+//     FIREBRICK,
+//     MAROON,
+//     PLUM_PIE,
+//     VELVET_MAROON,
+//     PLUM_VELVET,
+//     ROSY_FINCH,
+//     PUCE,
+//     DULL_PURPLE,
+//     ROSY_BROWN,
+//     KHAKI_ROSE,
+//     PINK_BOW,
+//     LIPSTICK_PINK,
+//     ROSE,
+//     DESERT_SAND,
+//     PIG_PINK,
+//     COTTON_CANDY,
+//     PINK_BUBBLEGUM,
+//     MISTY_ROSE,
+//     PINK,
+//     LIGHT_PINK,
+//     FLAMINGO_PINK,
+//     PINK_ROSE,
+//     PINK_DAISY,
+//     CADILLAC_PINK,
+//     BLUSH_RED,
+//     HOT_PINK,
+//     WATERMELON_PINK,
+//     VIOLET_RED,
+//     DEEP_PINK,
+//     PINK_CUPCAKE,
+//     PINK_LEMONADE,
+//     NEON_PINK,
+//     MAGENTA,
+//     DIMORPHOTHECA_MAGENTA,
+//     BRIGHT_NEON_PINK,
+//     PALE_VIOLET_RED,
+//     TULIP_PINK,
+//     MEDIUM_VIOLET_RED,
+//     ROGUE_PINK,
+//     BURNT_PINK,
+//     BASHFUL_PINK,
+//     CARNATION_PINK,
+//     PLUM,
+//     VIOLA_PURPLE,
+//     PURPLE_IRIS,
+//     PLUM_PURPLE,
+//     INDIGO,
+//     PURPLE_MONSTER,
+//     PURPLE_HAZE,
+//     EGGPLANT,
+//     GRAPE,
+//     PURPLE_JAM,
+//     DARK_ORCHID,
+//     PURPLE_FLOWER,
+//     MEDIUM_ORCHID,
+//     PURPLE_AMETHYST,
+//     DARK_VIOLET,
+//     VIOLET,
+//     PURPLE_SAGE_BUSH,
+//     LOVELY_PURPLE,
+//     AZTECH_PURPLE,
+//     MEDIUM_PURPLE,
+//     JASMINE_PURPLE,
+//     PURPLE_DAFFODIL,
+//     TYRIAN_PURPLE,
+//     CROCUS_PURPLE,
+//     PURPLE_MIMOSA,
+//     HELIOTROPE_PURPLE,
+//     CRIMSON,
+//     PURPLE_DRAGON,
+//     LILAC,
+//     BLUSH_PINK,
+//     MAUVE,
+//     WISTERIA_PURPLE,
+//     BLOSSOM_PINK,
+//     THISTLE,
+//     PERIWINKLE,
+//     LAVENDER_PINOCCHIO,
+//     LAVENDER_BLUE,
+//     PEARL,
+//     SEASHELL,
+//     MILK_WHITE,
+//     White,
+// };
