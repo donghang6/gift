@@ -14,9 +14,11 @@
 #include "ir.h"
 #include "esp_log.h"
 #include "ws2812b.h"
+#include "time.h"
 
 #define MAX_COUNT 8
 
+extern unsigned int color_array[];
 static const char *TAG = "main";
 
 static QueueHandle_t queue = NULL;
@@ -34,13 +36,14 @@ static void ws2812b_task(void *arg)
     static uint8_t togglt = false;
     static float luminance = 0.5;
     ir result;
+    static uint32_t current_color = RED;
     if (xQueueReceive(queue, &result, portMAX_DELAY) == pdPASS) {
         switch (result.cmd)
         {
             case 0xBA45: // power
                 if (!togglt) {
                     for (int i = 0; i < MAX_COUNT; i++) {
-                        ws2812b_set_pixel(strip, i, RED);
+                        ws2812b_set_pixel(strip, i, current_color);
                     }
                     ESP_ERROR_CHECK(strip->refresh(strip, 1000));
                     ESP_LOGI(TAG, "power on\n");
@@ -58,7 +61,7 @@ static void ws2812b_task(void *arg)
                         luminance += 0.05;
                         ESP_LOGI(TAG, "luminance up: %.2f\n", luminance);
                         for (int i = 0; i < MAX_COUNT; i++) {
-                            ws2812b_luminance(strip, i, RED, luminance);
+                            ws2812b_luminance(strip, i, current_color, luminance);
                         }
                     } else {
                         ESP_LOGI(TAG, "maximum luminance\n");
@@ -68,17 +71,30 @@ static void ws2812b_task(void *arg)
                 break;
             case 0xB847: // alien
                 ESP_LOGI(TAG, "alien\n");
+                srand(time(NULL));
+                uint16_t rand_color_index = rand() % 350;
+                uint32_t rand_color = color_array[rand_color_index];
                 if (togglt) {
                     while (luminance - 0.01 > -0.005) {
                         luminance -= 0.01;
                         ESP_LOGI(TAG, "luminance down: %.2f\n", luminance);
                         for (int i = 0; i < MAX_COUNT; i++) {
-                            ws2812b_luminance(strip, i, RED, luminance);
+                            ws2812b_luminance(strip, i, current_color, luminance);
+                        }
+                        ESP_ERROR_CHECK(strip->refresh(strip, 1000));
+                        vTaskDelay(pdMS_TO_TICKS(10));
+                    }
+                    while (luminance + 0.01 < 1.005) {
+                        luminance += 0.01;
+                        ESP_LOGI(TAG, "luminance up: %.2f\n", luminance);
+                        for (int i = 0; i < MAX_COUNT; i++) {
+                            ws2812b_luminance(strip, i, rand_color, luminance);
                         }
                         ESP_ERROR_CHECK(strip->refresh(strip, 1000));
                         vTaskDelay(pdMS_TO_TICKS(10));
                     }
                 }
+                current_color = rand_color;
                 break;
             case 0xBB44: // prefore
                 printf("prefore\n");
@@ -99,7 +115,7 @@ static void ws2812b_task(void *arg)
                         luminance -= 0.05;
                         ESP_LOGI(TAG, "luminance down: %.2f\n", luminance);
                         for (int i = 0; i < MAX_COUNT; i++) {
-                            ws2812b_luminance(strip, i, RED, luminance);
+                            ws2812b_luminance(strip, i, current_color, luminance);
                         }
                     } else {
                         ESP_LOGI(TAG, "minimum luminance\n");
