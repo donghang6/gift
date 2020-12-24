@@ -15,6 +15,8 @@
 #include "esp_log.h"
 #include "ws2812b.h"
 
+#define MAX_COUNT 8
+
 static const char *TAG = "main";
 
 static QueueHandle_t queue = NULL;
@@ -30,32 +32,53 @@ static void ws2812b_task(void *arg)
 {
     led_strip_t *strip = (led_strip_t *)arg;
     static uint8_t togglt = false;
+    static float luminance = 0.5;
     ir result;
     if (xQueueReceive(queue, &result, portMAX_DELAY) == pdPASS) {
         switch (result.cmd)
         {
             case 0xBA45: // power
-                printf("power\n");
-                    if (!togglt) {
-                        ws2812b_set_pixel(strip, 0, RED);
-                        // ws2812b_set_pixel(strip, 1, RED);
-                        // ws2812b_set_pixel(strip, 2, RED);
-                        // ws2812b_set_pixel(strip, 3, RED);
-                        // ws2812b_set_pixel(strip, 4, RED);
-                        // ws2812b_set_pixel(strip, 5, RED);
-                        // ws2812b_set_pixel(strip, 6, RED);
-                        // ws2812b_set_pixel(strip, 7, RED);
-                        ESP_ERROR_CHECK(strip->refresh(strip, 1000));
-                    } else {
-                        ESP_ERROR_CHECK(strip->clear(strip, 1000));
+                if (!togglt) {
+                    for (int i = 0; i < MAX_COUNT; i++) {
+                        ws2812b_set_pixel(strip, i, RED);
                     }
-                    togglt = !togglt;
+                    ESP_ERROR_CHECK(strip->refresh(strip, 1000));
+                    ESP_LOGI(TAG, "power on\n");
+                } else {
+                    ESP_ERROR_CHECK(strip->clear(strip, 1000));
+                    ESP_LOGI(TAG, "power off\n");
+                    luminance = 0.5;
+                }
+                togglt = !togglt;
                 break;
             case 0xB946: // up
-                printf("up\n");
+                ESP_LOGI(TAG, "up\n");
+                if (togglt) {
+                    if (luminance + 0.05 < 1.01) {
+                        luminance += 0.05;
+                        ESP_LOGI(TAG, "luminance up: %.2f\n", luminance);
+                        for (int i = 0; i < MAX_COUNT; i++) {
+                            ws2812b_luminance(strip, i, RED, luminance);
+                        }
+                    } else {
+                        ESP_LOGI(TAG, "maximum luminance\n");
+                    }
+                    ESP_ERROR_CHECK(strip->refresh(strip, 1000));
+                }
                 break;
             case 0xB847: // alien
-                printf("alien\n");
+                ESP_LOGI(TAG, "alien\n");
+                if (togglt) {
+                    while (luminance - 0.01 > -0.005) {
+                        luminance -= 0.01;
+                        ESP_LOGI(TAG, "luminance down: %.2f\n", luminance);
+                        for (int i = 0; i < MAX_COUNT; i++) {
+                            ws2812b_luminance(strip, i, RED, luminance);
+                        }
+                        ESP_ERROR_CHECK(strip->refresh(strip, 1000));
+                        vTaskDelay(pdMS_TO_TICKS(10));
+                    }
+                }
                 break;
             case 0xBB44: // prefore
                 printf("prefore\n");
@@ -70,7 +93,19 @@ static void ws2812b_task(void *arg)
                 printf("vol-\n");
                 break;
             case 0xEA15: // down
-                printf("down\n");
+                ESP_LOGI(TAG, "down\n");
+                if (togglt) {
+                    if (luminance - 0.05 > -0.01) {
+                        luminance -= 0.05;
+                        ESP_LOGI(TAG, "luminance down: %.2f\n", luminance);
+                        for (int i = 0; i < MAX_COUNT; i++) {
+                            ws2812b_luminance(strip, i, RED, luminance);
+                        }
+                    } else {
+                        ESP_LOGI(TAG, "minimum luminance\n");
+                    }
+                    ESP_ERROR_CHECK(strip->refresh(strip, 1000));
+                }
                 break;
             case 0xF609: // vol-
                 printf("vol-\n");

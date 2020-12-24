@@ -24,8 +24,13 @@ led_strip_t * ws2812b_init()
 
 void ws2812b_set_pixel(led_strip_t *strip, uint32_t index, uint32_t color)
 {
-    uint32_t red   = color >> 16 & 0xFF;
-    uint32_t green = color >> 8 & 0xFF;
-    uint32_t blue  = color & 0xFF;
+    ws2812b_luminance(strip, index, color, 0.5);
+}
+
+void ws2812b_luminance(led_strip_t *strip, uint32_t index, uint32_t color, float luminance)
+{
+    uint32_t red   = (color >> 16 & 0xFF) * luminance;
+    uint32_t green = (color >> 8 & 0xFF) * luminance;
+    uint32_t blue  = (color & 0xFF) * luminance;
     ESP_ERROR_CHECK(strip->set_pixel(strip, index, red, green, blue));
 }
